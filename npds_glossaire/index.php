@@ -2,7 +2,7 @@
 /************************************************************************/
 /* DUNE by NPDS                                                         */
 /*                                                                      */
-/* NPDS Copyright (c) 2002-2019 by Philippe Brunier                     */
+/* NPDS Copyright (c) 2002-2020 by Philippe Brunier                     */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
@@ -17,23 +17,25 @@
 /************************************************************************/
 
 // For More security
-if (!stristr($_SERVER['PHP_SELF'],"modules.php")) die();
-if (strstr($ModPath,"..") || strstr($ModStart,"..") || stristr($ModPath, "script") || stristr($ModPath, "cookie") || stristr($ModPath, "iframe") || stristr($ModPath, "applet") || stristr($ModPath, "object") || stristr($ModPath, "meta") || stristr($ModStart, "script") || stristr($ModStart, "cookie") || stristr($ModStart, "iframe") || stristr($ModStart, "applet") || stristr($ModStart, "object") || stristr($ModStart, "meta"))
+if (!stristr($_SERVER['PHP_SELF'],'modules.php')) die();
+if (strstr($ModPath,'..') || strstr($ModStart,'..') || stristr($ModPath, 'script') || stristr($ModPath, 'cookie') || stristr($ModPath, 'iframe') || stristr($ModPath, 'applet') || stristr($ModPath, 'object') || stristr($ModPath, 'meta') || stristr($ModStart, 'script') || stristr($ModStart, 'cookie') || stristr($ModStart, 'iframe') || stristr($ModStart, 'applet') || stristr($ModStart, 'object') || stristr($ModStart, 'meta'))
    die();
 // For More security
 if (!function_exists("Mysql_Connexion"))
    include ("mainfile.php");
 
 include ("modules/$ModPath/glossaire.conf.php");
-include ("modules/$ModPath/lang/glossaire-$language.php");
+include_once ("modules/$ModPath/lang/glossaire-$language.php");
 include ("modules/$ModPath/cache.timings.php");
 
 function glohead() {
    global $ModPath, $ModStart, $activ_rech, $NPDS_Prefix;
-
    include("header.php");
-   echo '<div class="card"><div class="card-body">';
-   echo '<h2><img src="modules/npds_glossaire/npds_glossaire.png" alt="icon_npds_glossaire"> '.glo_translate('Glossaire').'</h2>';
+   echo '
+   <div class="card">
+      <h2><img src="modules/npds_glossaire/npds_glossaire.png" style="max-width:180px; max-height=180px;" alt="icon_npds_glossaire"><a href="modules.php?ModPath='.$ModPath.'&amp;ModStart=index">'.glo_translate('Glossaire').'</a></h2>
+      <hr class="my-0 mx-3"/>
+      <div class="card-body">';
 
    $acounter = sql_query("SELECT count(*) FROM ".$NPDS_Prefix."td_glossaire WHERE affiche!='0'");
    list($acount) = sql_fetch_row($acounter);
@@ -43,7 +45,7 @@ function glohead() {
      tlist($acount);
      if ($activ_rech) {
         aff_forme_rech();
-        aff_alpha("");
+        aff_alpha('');
      }
    }
 }
@@ -55,7 +57,7 @@ function glofoot() {
       echo '
       <p class="lead"><a data-toggle="collapse" href="#saisiform" aria-expanded="true" aria-controls="saisiform"><i data-toggle="tooltip" data-placement="top" title="'.glo_translate("Cliquer pour cacher ou déployer").'" class="toggle-icon fa fa-lg fa-caret-down"></i></a> '.glo_translate("Soumettre une définition").'</p>
       <div id="saisiform" class="collapse" role="tabpanel" aria-labelledby="">
-         <div class="card-body">
+         <div class="">
             <form action="modules.php?ModPath='.$ModPath.'&ModStart='.$ModStart.'" method="POST" name="adminForm">
                <div class="form-group row">
                   <label class="col-form-label col-sm-3" for="terme">'.glo_translate("Terme").'</label>
@@ -95,48 +97,52 @@ function glofoot() {
       </div>
       <input type="hidden" name="op" value="submit_terme" />';
       echo Q_spambot();
-      echo '<input class="btn btn-outline-primary" type="submit" value="'.glo_translate("Valider").'">
+      echo '
+      <div class="form-group row">
+         <div class="col-sm-9 ml-auto">
+            <button class="btn btn-primary" type="submit">'.glo_translate("Valider").'</button>
+         </div>
+      </div>
       </form>
       </div>
-    </div>';
+   </div>';
    }
 }
 
 function rand_glo() {
    global $nb_affichage, $NPDS_Prefix;
-   
    $acounter = sql_query("SELECT count(*) FROM ".$NPDS_Prefix."td_glossaire WHERE affiche!='0'");
    list($acount) = sql_fetch_row($acounter);
    if ($acount != 0) {
       echo '
       <p class="lead"><a data-toggle="collapse" href="#qqdef" aria-expanded="true" aria-controls="qqdef"><i data-toggle="tooltip" data-placement="top" title="'.glo_translate("Cliquer pour cacher ou déployer").'" class="toggle-icon fa fa-lg fa-caret-down"></i></a> '.glo_translate("Quelques définitions").'</p>
       <div id="qqdef" class="collapse" role="tabpanel" aria-labelledby="">
-      <div class="card-body">
-         <table class="table table-sm table-hover">
-            <thead>
-               <tr>
-                  <th>'.glo_translate("Termes").'</th>
-                  <th>'.glo_translate("Définitions").'</th>
-               </tr>
-            </thead>
-            <tbody>';
+         <div class="">
+            <table class="table table-sm table-hover">
+               <thead class="thead-dark">
+                  <tr>
+                     <th class="n-t-col-xs-3">'.glo_translate("Termes").'</th>
+                     <th>'.glo_translate("Définitions").'</th>
+                  </tr>
+               </thead>
+               <tbody>';
       settype($nb_affichage,"integer");
-      $TableRep=sql_query("SELECT id, nom, definition, lien FROM ".$NPDS_Prefix."td_glossaire WHERE affiche!='0' ORDER BY RAND() LIMIT $nb_affichage");
-      while (list($id_terme,$terme,$terme_def, $terme_lien) = sql_fetch_row($TableRep)) {
-      echo '
-               <tr>
-                  <td class="align-top">'.$terme.'</td>
-                  <td>'.$terme_def.'';
-      if ($terme_lien)
-         echo '<br /><a href="'.$terme_lien.'" target="_blank" class="text-right">'.glo_translate("Site internet").'</a>';
-      echo '</td>
-               </tr>';
+      $TableRep=sql_query("SELECT id, nom, definition, lien, gcat FROM ".$NPDS_Prefix."td_glossaire WHERE affiche!='0' ORDER BY RAND() LIMIT $nb_affichage");
+      while (list($id_terme,$terme,$terme_def, $terme_lien, $term_cat) = sql_fetch_row($TableRep)) {
+         echo '
+                  <tr>
+                     <td class=" n-t-col-xs-3 align-middle"><span class="lead">'.$terme.'</span><br /><span class="badge badge-secondary">'.$term_cat.'</span></td>
+                     <td>'.$terme_def.'';
+         if ($terme_lien)
+            echo '<br /><a href="'.$terme_lien.'" target="_blank" class="text-right">'.glo_translate("Site internet").'</a>';
+         echo '</td>
+                  </tr>';
       }
       echo '
-            </tbody>
-         </table>
-      </div>
-   </div>';
+               </tbody>
+            </table>
+         </div>
+      </div>';
    }
 }
 
@@ -145,7 +151,7 @@ function categ_glo($gcat, $debut) {
 
    $cate = removeHack(StripSlashes(strip_tags(urldecode($gcat), ENT_NOQUOTES)));
    settype($debut,"integer");
-   if ($debut=="") { $debut=0; }
+   if ($debut=='') $debut=0;
 
    $TableRep=sql_query("SELECT id FROM ".$NPDS_Prefix."td_glossaire WHERE affiche!='0' AND gcat='$cate' ORDER BY nom");
    $nbe=sql_num_rows($TableRep);
@@ -164,17 +170,29 @@ function categ_glo($gcat, $debut) {
       $topsuivant="modules.php?ModPath=$ModPath&amp;ModStart=$ModStart&amp;gcat=$cate";
 
       if ($top==1) {
-      echo '<p class="lead text-success"><i class="fa fa-info-circle" aria-hidden="true"></i> '.$nbe.' '.glo_translate("Réponse(s)").'</p>';
-      echo '<table class="table table-sm table-hover">';
-      echo '<thead><tr><th>'.glo_translate("Termes").'</th><th>'.glo_translate("Définitions").'</th></tr></thead><tbody>';
+      echo '
+      <p class="lead text-success"><i class="fa fa-info-circle" aria-hidden="true"></i> '.$nbe.' '.glo_translate("Réponse(s)").'</p>
+      <table class="table table-sm table-hover">
+         <thead class="thead-dark">
+            <tr>
+               <th class="n-t-col-xs-3">'.glo_translate("Termes").'</th>
+               <th>'.glo_translate("Définitions").'</th>
+            </tr>
+         </thead>
+         <tbody>';
          while (list($glo_id, $glo_nom, $glo_definition, $glo_lien)=sql_fetch_row($TableRep)) {
-            echo '<tr><td class="align-top">'.$glo_nom.'</td><td>'.$glo_definition;
-            if ($glo_lien) {
-            echo '<br /><a href="'.$glo_lien.'" target="_blank" class="btn btn-outline-primary btn-sm">'.glo_translate("Site internet").'</a>';
-            }
-         echo '</td></tr>';
+            echo '
+            <tr>
+               <td class="n-t-col-xs-3 align-middle">'.$glo_nom.'</td>
+               <td>'.$glo_definition;
+            if ($glo_lien)
+               echo '<br /><a href="'.$glo_lien.'" target="_blank" class="btn btn-outline-primary btn-sm">'.glo_translate("Site internet").'</a>';
+         echo '</td>
+            </tr>';
          }
-         echo '</tbody></table>';
+         echo '
+         </tbody>
+      </table>';
       }
       pagination ($top, $debut, $topsuivant, $nb_affichage, $nbe);
       
@@ -188,8 +206,8 @@ function rech_lettre($lettre, $gcat, $debut) {
 
    $lettre = removeHack(StripSlashes(strip_tags(urldecode($lettre), ENT_NOQUOTES)));
    if (empty($gcat)) { $cate = translate("All"); } else { $cate = removeHack(StripSlashes(strip_tags(urldecode($gcat), ENT_NOQUOTES))); }
-   settype($debut,"integer");
-   if ($debut=="") { $debut=0; }
+   settype($debut,'integer');
+   if ($debut=='') $debut=0;
 
    $TableRep=sql_query("SELECT id FROM ".$NPDS_Prefix."td_glossaire WHERE affiche!='0' AND lettre='$lettre'".($cate!=translate("All")?" AND gcat='$cate'":"")." ORDER BY nom");
    $nbe=sql_num_rows($TableRep);
@@ -206,17 +224,30 @@ function rech_lettre($lettre, $gcat, $debut) {
       $top=1;
       $topsuivant="modules.php?ModPath=$ModPath&amp;ModStart=$ModStart&amp;gcat=$cate&amp;op=rech_lettre&amp;lettre=$lettre";
       if ($top==1) {
-      echo '<p class="lead text-success"><i class="fa fa-info-circle" aria-hidden="true"></i> '.$nbe.' '.glo_translate("Réponse(s)").'</p>';
-      echo '<table class="table table-sm table-hover">';
-      echo '<thead><tr><th>'.glo_translate("Termes").'</th><th>'.glo_translate("Définitions").'</th></tr></thead><tbody>';
+      echo '
+      <p class="lead text-success"><i class="fa fa-info-circle" aria-hidden="true"></i> '.$nbe.' '.glo_translate("Réponse(s)").'</p>';
+      echo '
+      <table class="table table-sm table-hover">
+         <thead>
+            <tr>
+               <th class="n-t-col-xs-3">'.glo_translate("Termes").'</th>
+               <th>'.glo_translate("Définitions").'</th>
+            </tr>
+         </thead>
+         <tbody>';
       while (list($glo_id, $glo_nom, $glo_definition, $glo_lien)=sql_fetch_row($TableRep)) {
-      echo '<tr><td class="align-top">'.$glo_nom.'</td><td>'.$glo_definition;
-      if ($glo_lien) {
-      echo '<br /><a href="'.$glo_lien.'" target="_blank" class="btn btn-outline-primary btn-sm">'.glo_translate("Site internet").'</a>';
+         echo '
+            <tr>
+               <td class="n-t-col-xs-3 align-middle">'.$glo_nom.'</td>
+               <td>'.$glo_definition;
+         if ($glo_lien)
+            echo '<p class="text-right"><a href="'.$glo_lien.'" target="_blank" class="">'.glo_translate("Site internet").'</p>';
+         echo '</td>
+            </tr>';
       }
-      echo '</td></tr>';
-      }
-      echo '</tbody></table>';
+      echo '
+         </tbody>
+      </table>';
       }
       pagination ($top, $debut, $topsuivant, $nb_affichage, $nbe);
    }
@@ -248,92 +279,111 @@ function rech_terme($type, $terme, $debut) {
    } else
       $cache_obj = new SuperCacheEmpty();
    if (($cache_obj->genereting_output==1) or ($cache_obj->genereting_output==-1) or (!$SuperCache)) {
-      
       settype($nb_affichage,"integer");
-      $result = sql_query("SELECT id, nom, definition, lien FROM ".$NPDS_Prefix."td_glossaire WHERE $types AND affiche!='0' ORDER BY nom LIMIT $debut,$nb_affichage");
+      $result = sql_query("SELECT id, nom, definition, lien, gcat FROM ".$NPDS_Prefix."td_glossaire WHERE $types AND affiche!='0' ORDER BY nom LIMIT $debut,$nb_affichage");
       $top=1;
       $topsuivant="modules.php?ModPath=$ModPath&amp;ModStart=$ModStart&amp;op=rech_terme&amp;terme=$terme&amp;type=$type";
       if ($top==1) {
-      echo '<p class="lead text-success"><i class="fa fa-info-circle" aria-hidden="true"></i> '.$nbe.' '.glo_translate("Réponse(s)").'</p>';
-      echo '<table class="table table-sm table-hover">';
-      echo '<thead><tr><th>'.glo_translate("Termes").'</th><th>'.glo_translate("Définitions").'</th></tr></thead><tbody>';
-      while (list($glo_id, $glo_nom, $glo_definition, $glo_lien)=sql_fetch_row($result)) {
-      echo '<tr><td class="align-top">'.$glo_nom.'</td><td>'.$glo_definition;
-      if ($glo_lien) {
-      echo '<br /><a href="'.$glo_lien.'" target="_blank" class="btn btn-outline-primary btn-sm">'.glo_translate("Site internet").'</a>';
-      }
-      echo '</td></tr>';
-      }
-      echo '</tbody></table>';
+         echo '
+      <p class="lead text-success"><i class="fa fa-info-circle" aria-hidden="true"></i> '.$nbe.' '.glo_translate("Réponse(s)").'</p>
+      <table class="table table-sm table-hover">
+         <thead>
+            <tr>
+               <th class="n-t-col-xs-3">'.glo_translate("Termes").'</th>
+               <th>'.glo_translate("Définitions").'</th>
+            </tr>
+         </thead>
+         <tbody>';
+         while (list($glo_id, $glo_nom, $glo_definition, $glo_lien, $glo_cat)=sql_fetch_row($result)) {
+            echo '
+            <tr>
+               <td class="n-t-col-xs-3 align-middle lead">'.$glo_nom.'<br /><span class="badge badge-secondary">'.$glo_cat.'</span></td>
+               <td>'.$glo_definition;
+            if ($glo_lien)
+               echo '<br /><a href="'.$glo_lien.'" target="_blank" class="btn btn-outline-primary btn-sm">'.glo_translate("Site internet").'</a>';
+            echo '</td>
+            </tr>';
+         }
+      echo '
+         </tbody>
+      </table>';
       }
       pagination ($top, $debut,$topsuivant,$nb_affichage,$nbe);
-      
-      }
-      if ($SuperCache) {
-      $cache_obj->endCachingPage();
    }
+   if ($SuperCache)
+      $cache_obj->endCachingPage();
 }
 
 // SOUS-FONCTIONS
 function tlist($acount) {
    global $ModPath, $ModStart, $sortby, $gcat, $NPDS_Prefix;
    $cate = stripslashes($gcat);
-   echo '<p class="lead"><a data-toggle="collapse" href="#rechdo" aria-expanded="true" aria-controls="rechdo"><i data-toggle="tooltip" data-placement="top" title="'.glo_translate("Cliquer pour cacher ou déployer").'" class="toggle-icon fa fa-lg fa-caret-up"></i></a> '.glo_translate("Sélectionner un dossier").'</p>';
-   echo'<div id="rechdo" class="collapse show" role="tabpanel" aria-labelledby="">
-      <div class="card-body">';
-   echo '<div class="row">
-      <div class="col-sm-3">';
-   if (($cate == translate("All")) OR ($cate == "")) {
-   echo "<i class=\"fa fa-folder-open fa-2x text-muted\"></i> <strong>".translate("All")." ($acount)</strong>\n";
-   } else {
-   echo "<a href=\"modules.php?ModPath=$ModPath&amp;ModStart=$ModStart&amp;gcat=".translate("All")."&amp;sortby=$sortby\" class=\"\"><i class=\"fa fa-2x fa-folder\"></i> ".translate("All")."</a> ($acount)\n"; 
-   }
+   echo '
+   <p class="lead"><a data-toggle="collapse" href="#rechdo" aria-expanded="true" aria-controls="rechdo"><i data-toggle="tooltip" data-placement="top" title="'.glo_translate("Cliquer pour cacher ou déployer").'" class="toggle-icon fa fa-lg fa-caret-up"></i></a> '.glo_translate("Sélectionner un dossier").'</p>
+   <div id="rechdo" class="collapse show" role="tabpanel" aria-labelledby="">
+      <div class="d-flex flex-column flex-sm-row flex-wrap justify-content-between my-3 border rounded">
+            <p class="p-2 mb-0">';
+   if (($cate == translate("All")) OR ($cate == ''))
+      echo '<i class="fa fa-folder-open fa-2x text-muted mr-2 align-middle"></i> <strong class="align-middle">'.translate("All").'</strong><span class="badge badge-secondary ml-2 my-2 float-right">'.$acount.'</span></p>';
+   else
+      echo '<a href="modules.php?ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;gcat='.translate("All").'&amp;sortby='.$sortby.'" class=""><i class="fa fa-folder fa-2x mr-2 align-middle"></i><span class="align-middle">'.translate("All").'</span></a><span class="badge badge-secondary ml-2 my-2 float-right">'.$acount.'</span></p>';
    $result = sql_query("SELECT DISTINCT gcat, count(gcat) FROM ".$NPDS_Prefix."td_glossaire WHERE affiche!='0' GROUP BY gcat ORDER BY gcat");
-   echo '</div>';
-   $rup=1;
+/*
+   echo '
+            </p';
+*/
    while (list($category, $dcount) = sql_fetch_row($result)) {
-   $rup++;
-   $category=stripslashes($category);
-   echo '<div class="col-sm-3">';
-   if ($category == $cate) {
-   echo "<i class=\"fa fa-folder-open fa-2x text-muted\"></i><span class=\"\"> <strong>$category ($dcount)</strong></span> \n";
-    } else {
-        $category2 = urlencode($category);
-        echo "<a href=\"modules.php?ModPath=$ModPath&amp;ModStart=$ModStart&amp;gcat=$category2&amp;sortby=$sortby\"><i class=\"fa fa-2x fa-folder\"></i> $category</a> ($dcount) \n";
-    }
-      echo '</div>';
-    if ($rup>=5) {
-       $rup=0;
-    }
-  }
-echo '</div></div></div>';
+      $category=stripslashes($category);
+      echo '
+            <p class="p-2 mb-0">';
+      if ($category == $cate)
+         echo '<i class="fa fa-folder-open fa-2x text-muted mr-2 align-middle"></i><strong class="align-middle">'.$category.'</strong><span class="badge badge-secondary ml-2 my-2 float-right">'.$dcount.'</span>';
+       else {
+           $category2 = urlencode($category);
+           echo '<a href="modules.php?ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;gcat='.$category2.'&amp;sortby='.$sortby.'"><i class="fa fa-2x fa-folder mr-2 align-middle"></i><span class="align-middle">'.$category.'</span></a><span class="badge badge-secondary ml-2 my-2 float-right">'.$dcount.'</span>';
+       }
+         echo '
+            </p>';
+   }
+   echo '
+      </div>
+   </div>';
 }
 function aff_forme_rech() {
    global $ModPath, $ModStart;
-   echo '<p class="lead"><a data-toggle="collapse" href="#rechcho" aria-expanded="true" aria-controls="rechcho"><i data-toggle="tooltip" data-placement="top" title="'.glo_translate("Cliquer pour cacher ou déployer").'" class="toggle-icon fa fa-lg fa-caret-up"></i></a> '.glo_translate("Rechercher par choix multiples").'</p>';
-   echo'<div id="rechcho" class="collapse show" role="tabpanel" aria-labelledby="">';
-   echo '<div class="card-body">';   
-   echo '<form action="modules.php?ModPath='.$ModPath.'&ModStart='.$ModStart.'" method="post">';
-   echo '<div class="form-group row">';	  
-   echo '<div class="col-md-2 mt-1"><label for=""><strong>'.glo_translate("Sélectionner").'</strong></div>';
-   echo '<div class="col-md-4 mb-1"><select class="custom-select" name="type">';
-   echo '<option value="1"> '.glo_translate("Termes")."\n";
-   echo '<option value="2"> '.glo_translate("Définitions");
-   echo '<option value="3"> '.glo_translate("Termes").' & '.glo_translate("Définitions");
-   echo '</select></div>';
-   echo '<input type="hidden" name="op" value="rech_terme">';
-   echo '<div class="col-md-4 mb-1"><input class="form-control" type="text" name="terme" size="13" maxsize="100"></div>';
-   echo '<div class="col-md-2 mb-1"><input class="btn-outline-primary btn-sm" type="submit" value="'.glo_translate("Valider").'"></div></div>';
-   echo '</form>';
-   echo '</div></div>';
+   echo '
+   <p class="lead"><a data-toggle="collapse" href="#rechcho" aria-expanded="true" aria-controls="rechcho"><i data-toggle="tooltip" data-placement="top" title="'.glo_translate("Cliquer pour cacher ou déployer").'" class="toggle-icon fa fa-lg fa-caret-up"></i></a> '.glo_translate("Rechercher par choix multiples").'</p>
+   <div id="rechcho" class="collapse show" role="tabpanel" aria-labelledby="">
+      <div class="">
+         <form action="modules.php?ModPath='.$ModPath.'&ModStart='.$ModStart.'" method="post">
+            <div class="form-group row">
+               <label class="col-form-label col-md-3" for="type">'.glo_translate("Sélectionner").'</label>
+               <div class="col-md-4 mb-2">
+                  <select class="custom-select" id="type" name="type">
+                     <option value="1"> '.glo_translate("Termes").'</option>
+                     <option value="2"> '.glo_translate("Définitions").'</option>
+                     <option value="3"> '.glo_translate("Termes").' & '.glo_translate("Définitions").'</option>
+                  </select>
+               </div>
+               <div class="col-md-3 mb-2">
+                  <input class="form-control" type="text" name="terme" maxsize="100" />
+               </div>
+               <div class="col-md-2 mb-2">
+                  <button class="btn btn-primary" type="submit">'.glo_translate("Valider").'</button>
+               </div>
+            </div>
+            <input type="hidden" name="op" value="rech_terme" />
+         </form>
+      </div>
+   </div>';
 }
 function aff_alpha($type) {
    global $ModPath, $ModStart, $gcat;
-   echo '<p class="lead"><a data-toggle="collapse" href="#rechlet" aria-expanded="true" aria-controls="rechlet"><i data-toggle="tooltip" data-placement="top" title="'.glo_translate("Cliquer pour cacher ou déployer").'" class="toggle-icon fa fa-lg fa-caret-up"></i></a> '.glo_translate("Rechercher par lettre").'</p>';
-   echo'<div id="rechlet" class="collapse show" role="tabpanel" aria-labelledby=""><div class="card-body">';
-   echo '<p class="lead text-center">';
-
-   $alphabet = array ("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","".glo_translate("Autres")."");
+   echo '
+   <p class="lead"><a data-toggle="collapse" href="#rechlet" aria-expanded="true" aria-controls="rechlet"><i data-toggle="tooltip" data-placement="top" title="'.glo_translate("Cliquer pour cacher ou déployer").'" class="toggle-icon fa fa-lg fa-caret-up"></i></a> '.glo_translate("Rechercher par lettre").'</p>
+   <div id="rechlet" class="collapse show" role="tabpanel" aria-labelledby="">
+      <p class="lead text-center">';
+   $alphabet = array ('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',''.glo_translate("Autres").'');
    $num = count($alphabet) - 1;
    $counter = 0;
    foreach($alphabet as $ltr) {
@@ -345,19 +395,20 @@ function aff_alpha($type) {
          echo ' | ';
          $counter++;
    }
-   echo '</p></div></div>';
+   echo '</p>
+   </div>';
 }
 function pagination ($top, $debut, $topsuivant, $nb_affichage, $nbe) {
    global $ModPath, $ModStart;
    if ($top==1) {
-       echo '<ul class="pagination pagination-sm">
-    ';
+       echo '
+         <ul class="pagination pagination-sm">';
        if ($debut != 0) {
-          echo '<li class="page-item"><a href="'.$topsuivant.'&debut=';
+          echo '
+            <li class="page-item"><a href="'.$topsuivant.'&debut=';
           $resultat = ($debut-$nb_affichage);
-          if ($resultat < 0) {
+          if ($resultat < 0)
              $resultat = 0;
-          }
           echo $resultat.'" class="page-link"><span aria-hidden="true">&laquo;</span> '.glo_translate("précédente").'</a></li>';
 //          $deb=true;
        }
@@ -366,12 +417,12 @@ function pagination ($top, $debut, $topsuivant, $nb_affichage, $nbe) {
 //             echo ' ';
           echo '<li class="page-item"><a href="'.$topsuivant.'&debut=';
           $final =($debut+$nb_affichage);
-          if ($final >= $nbe) {
+          if ($final >= $nbe)
              $final=($nbe - $nb_affichage);
-          }
           echo $final.'" class="page-link">'.glo_translate("suivante").' <span aria-hidden="true">&raquo;</span></a></li>';
        }
-    echo '</ul>';
+    echo '
+         </ul>';
    }
 }
 // SWITCH AFFICHAGE PAGE
@@ -388,39 +439,42 @@ switch($op) {
 
       if (!$gcategory) $gcategory = $sgcategory;
 
-      if (($gcategory!="") and ($terme!="") and ($content!="")) {
+      if (($gcategory!='') and ($terme!='') and ($content!='')) {
          $lettre=substr(ucfirst($terme),0,1);
          if (!preg_match("#[A-Z]#",$lettre)) {$lettre="!AZ";}
          $gcategory=removeHack(addslashes(strip_tags(urldecode($gcategory), ENT_NOQUOTES))); // electrobug
          $terme=removeHack(stripslashes(strip_tags(urldecode($terme), ENT_NOQUOTES))); // electrobug
          $content=removeHack($content);
-         $result=sql_query("select * from ".$NPDS_Prefix."td_glossaire where gcat='$gcategory' and nom='$terme' and definition='$content'");
+         $result=sql_query("SELECT * FROM ".$NPDS_Prefix."td_glossaire WHERE gcat='$gcategory' AND nom='$terme' AND definition='$content'");
          list($id)=sql_fetch_row($result);
-         
+
          if (!$id) {
-            sql_query("insert into ".$NPDS_Prefix."td_glossaire values (NULL, '$gcategory', '$lettre', '$terme', '$content', '0', '$xurl')");
-      echo '<p class="lead text-info"><i class="fa fa-info-circle" aria-hidden="true"></i> '.glo_translate("Merci pour votre proposition").'.</p>';
-         } else {
-            echo '<p class="lead text-info"><i class="fa fa-info-circle" aria-hidden="true"></i> '.glo_translate("Une définition identique existe déjà").'.</p>';
-         }
-      } else {
-            echo '<p class="lead text-info"><i class="fa fa-info-circle" aria-hidden="true"></i> '.glo_translate("Merci de respecter les consignes").'.</p>';
-      }
+            sql_query("INSERT INTO ".$NPDS_Prefix."td_glossaire values (NULL, '$gcategory', '$lettre', '$terme', '$content', '0', '$xurl')");
+            echo '
+      <div class="alert alert-success lead alert-dismissible fade show">
+         '.glo_translate("Merci pour votre proposition").'.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>';
+         } else
+            echo '
+      <div class="alert alert-danger lead alert-dismissible fade show">
+         '.glo_translate("Une définition identique existe déjà").'.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>';
+      } else
+         echo '
+         <p class="lead text-info"><i class="fa fa-info-circle" aria-hidden="true"></i> '.glo_translate("Merci de respecter les consignes").'.</p>';
       glofoot();
-      break;
+   break;
 
    case "rech_terme":
       glohead();
       rech_terme($type, $terme, $debut);
       glofoot();
-      break;
-
+   break;
    case "rech_lettre":
       glohead();
       rech_lettre($lettre, $gcat, $debut);
       glofoot();
-      break;
-
+   break;
     default:
       glohead();
       if (empty($gcat) || (stripslashes($gcat)==translate("All")))
