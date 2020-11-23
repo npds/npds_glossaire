@@ -1,2 +1,2 @@
 # npds_glossaire
-Modules glossaire pour NPDS
+Modules glossaire pour le CMS NPDS
