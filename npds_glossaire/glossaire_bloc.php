@@ -2,7 +2,7 @@
 /************************************************************************/
 /* DUNE by NPDS                                                         */
 /*                                                                      */
-/* NPDS Copyright (c) 2002-2020 by Philippe Brunier                     */
+/* NPDS Copyright (c) 2002-2022 by Philippe Brunier                     */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
@@ -23,11 +23,11 @@ $ModStart='index';
 include_once('modules/'.$ModPath.'/lang/glossaire-'.$language.'.php');
 
 $content ='';
-$content .= '<div class="d-flex w-100 justify-content-center"><a href="modules.php?ModPath=npds_glossaire&amp;ModStart=index"><img src="modules/npds_glossaire/npds_glossaire.png" alt="icon_npds_glossaire" style="max-width:180px; max-height=180px;"></a></div>';
+$content .= '<div class="d-flex w-100 justify-content-center"><a href="modules.php?ModPath=npds_glossaire&amp;ModStart=index"><img src="modules/npds_glossaire/npds_glossaire.png" alt="icon_npds_glossaire" style="max-width:140px; max-height:140px;"></a></div>';
 $content .= '
          <p class="lead text-center">';
 
-$alphabet = array ('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',''.glo_translate("Autres").'');
+$alphabet = array ('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',glo_translate("Autres"));
 $num = count($alphabet) - 1;
 $counter = 0;
 $listletter='';
@@ -39,13 +39,13 @@ foreach($alphabet as $ltr) {
       $listletter .= '<a href="modules.php?ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;op=rech_lettre&amp;lettre=!AZ">'.$ltr.'</a>';
    if ( $counter != $num )
       $listletter .= ' | ';
-      $counter++;
+   $counter++;
 }
 $content .= $listletter.'</p>';
 if ($admin) 
    $content .='
-   <div class="mt-2 text-right">
-      <a href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart=admin/glossadmin" data-toggle="tooltip" title="[french]Admin[/french][english]Admin[/english]"><i class="fa fa-cogs fa-lg" aria-hidden="true"></i></a>
+   <div class="mt-2 text-end">
+      <a href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart=admin/glossadmin" data-bs-toggle="tooltip" data-bs-placement="left" title="[french]Administration[/french][english]Admin[/english]"><i class="fa fa-cogs fa-lg" aria-hidden="true"></i></a>
    </div>';
 $content = aff_langue($content);
 

@@ -8,7 +8,7 @@
 /* This version name NPDS Copyright (c) 2001-2017 by Philippe Brunier   */
 /*                                                                      */
 /* module npds_glossaire v 3.0 pour revolution 16                       */
-/* by team jpb/phr 2017                                                 */
+/* by team jpb/phr 2017/2022                                            */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
@@ -21,7 +21,7 @@ Installation
 ----------------------------------------------------------------------
 Automatique via Module-Install (Admin/Gestion installation des modules)
 
-Associé à Meta-lang et à infobulle :
+Associé à Meta-lang et au tooltip :
 
  - Dans l'administration de npds_glossaire / liste des définitions - Vous n'avez ensuite plus qu'à cliquer sur "Meta" pour transférer
    votre terme, sa définition et le lien associé dans meta-lang !
@@ -35,6 +35,7 @@ Lancement : npds_glossaire
  - via une url de type : modules.php?ModPath=npds_glossaire&ModStart=index
 
 ----------------------------------------------------------------------
-Administration : Glossaire
+Administration : npds_glossaire 
+ - /admin.php?op=Extend-Admin-SubModule&ModPath=npds_glossaire&ModStart=admin/glossadmin
 ----------------------------------------------------------------------
 Via l'administration des Plugins - npds_glossaire

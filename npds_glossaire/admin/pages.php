@@ -2,7 +2,7 @@
 /************************************************************************/
 /* DUNE by NPDS                                                         */
 /*                                                                      */
-/* NPDS Copyright (c) 2002-2017 by Philippe Brunier                     */
+/* NPDS Copyright (c) 2002-2020 by Philippe Brunier                     */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
@@ -16,17 +16,15 @@
 /* Tribal-dolphin 2008                                                  */
 /************************************************************************/
 
-$PAGES['modules.php?ModPath='.$ModPath.'&ModStart=index*']['title']="[french]Glossaire[/french][english]Glossary[/english]+|$title+";
-$PAGES['modules.php?ModPath='.$ModPath.'&ModStart=index*']['run']="yes";
-$PAGES['modules.php?ModPath='.$ModPath.'&ModStart=index*']['TinyMce']=1;
-$PAGES['modules.php?ModPath='.$ModPath.'&ModStart=index*']['TinyMce-theme']="full";
-
+$PAGES['modules.php?ModPath=npds_glossaire&ModStart=index']['title']="[french]Glossaire[/french][english]Glossary[/english]+|$title+";
+$PAGES['modules.php?ModPath=npds_glossaire&ModStart=index']['run']="yes";
+$PAGES['modules.php?ModPath=npds_glossaire&ModStart=index']['TinyMce']=1;
+$PAGES['modules.php?ModPath=npds_glossaire&ModStart=index']['TinyMce-theme']="full";
 
 $PAGES['modules.php?ModPath='.$ModPath.'&ModStart=a*']['title']="[french]Glossaire[/french][english]Glossary[/english]+|$title+";
 $PAGES['modules.php?ModPath='.$ModPath.'&ModStart=a*']['run']="yes";
 $PAGES['modules.php?ModPath='.$ModPath.'&ModStart=a*']['TinyMce']=1;
 $PAGES['modules.php?ModPath='.$ModPath.'&ModStart=a*']['TinyMce-theme']="full";
-
 
 $PAGES['modules.php?ModPath='.$ModPath.'&ModStart=admin*']['title']="[french]Glossaire[/french][english]Glossary[/english]+|$title+";
 $PAGES['modules.php?ModPath='.$ModPath.'&ModStart=admin*']['run']="yes";

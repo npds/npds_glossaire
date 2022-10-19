@@ -2,7 +2,7 @@
 /************************************************************************/
 /* DUNE by NPDS                                                         */
 /*                                                                      */
-/* NPDS Copyright (c) 2002-2019 by Philippe Brunier                     */
+/* NPDS Copyright (c) 2002-2022 by Philippe Brunier                     */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
@@ -20,9 +20,8 @@
 /************************************************************************/
 
 global $ModInstall;
-
 #autodoc $name_module: Nom du module #required (no space and exotism)
-$name_module = "npds_glossaire";
+$name_module = 'npds_glossaire';
 
 #autodoc $path_adm_module: chemin depuis $ModInstall #required SI admin avec interface
 $path_adm_module = 'admin/glossadmin';
@@ -40,30 +39,30 @@ $icon='npds_glossaire';
 $list_fich = '';
 
 #autodoc $sql = array(""): Si votre module doit exécuter une ou plusieurs requêtes SQL, tapez vos requêtes ici.
-#autodoc Attention! UNE requête par élément de tableau!
+#autodoc Attention! UNE requête par élément de tableau! SVP respecter la syntaxe suivante PAS d'espace avant l'instruction
 #autodoc Synopsis: $sql = array("requête_sql_1","requête_sql_2");
 $sql = array("CREATE TABLE ".$NPDS_Prefix."td_glossaire (
-  id int(10) NOT NULL auto_increment,
-  gcat varchar(30) default NULL,
-  lettre varchar(8) NOT NULL default '',
-  nom longtext NOT NULL,
-  definition longtext NOT NULL,
+  id smallint(10) UNSIGNED NOT NULL auto_increment,
+  gcat varchar(30) COLLATE utf8mb4_unicode_ci default NULL,
+  lettre varchar(8) COLLATE utf8mb4_unicode_ci NOT NULL default '',
+  nom text COLLATE utf8mb4_unicode_ci NOT NULL,
+  definition longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   affiche int(1) NOT NULL default '0',
-  lien varchar(255) NOT NULL default '',
+  lien varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL default '',
   PRIMARY KEY (id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+) MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
 
 #autodoc $blocs = array(array(""), array(""), array(""), array(""), array(""), array(""), array(""), array(""), array(""))
 #autodoc                titre      contenu    membre     groupe     index      rétention  actif      aide       description
 #autodoc Configuration des blocs
-$blocs = array(array(''), array(''), array('0'), array(''), array(''), array('0'), array(''), array(''), array(''));
+$blocs = array(array('Glossaire'), array('include#modules/npds_glossaire/glossaire_bloc.php'), array('0'), array(''), array('1'), array('0'), array('1'), array(''), array(''));
 
 #autodoc $txtdeb : Vous pouvez mettre ici un texte de votre choix avec du html qui s'affichera au début de l'install
 #autodoc Si rien n'est mis, le texte par défaut sera automatiquement affiché
 $txtdeb = '';
 
 #autodoc $txtfin : Vous pouvez mettre ici un texte de votre choix avec du html qui s'affichera à la fin de l'install
-$txtfin = "Merci d'utiliser npds_glossaire<br /><br /><a href=\"http://modules.npds.org\" target=\"_blank\">modules.npds.org</a><br />";
+$txtfin = "Merci d'utiliser npds_glossaire<br />";
 
 #autodoc $end_link: Lien sur lequel sera redirigé l'utilisateur à la fin de l'install (si laissé vide, redirigé sur index.php)
 #autodoc N'oubliez pas les '\' si vous utilisez des guillemets !!!
