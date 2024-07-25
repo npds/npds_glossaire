@@ -2,7 +2,7 @@
 /************************************************************************/
 /* DUNE by NPDS                                                         */
 /*                                                                      */
-/* NPDS Copyright (c) 2002-2020 by Philippe Brunier                     */
+/* NPDS Copyright (c) 2002-2023 by Philippe Brunier                     */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
@@ -33,10 +33,9 @@ $counter = 0;
 $listletter='';
 
 foreach($alphabet as $ltr) {
-   if ($ltr!=translate("Other"))
-      $listletter .= '<a href="modules.php?ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;op=rech_lettre&amp;lettre='.$ltr.'">'.$ltr.'</a>';
-   else
-      $listletter .= '<a href="modules.php?ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;op=rech_lettre&amp;lettre=!AZ">'.$ltr.'</a>';
+   $listletter .=  ($ltr!=glo_translate("Autres")) ?
+      '<a href="modules.php?ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;op=rech_lettre&amp;lettre='.$ltr.'&amp;gcat=">'.$ltr.'</a>' :
+      '<a href="modules.php?ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;op=rech_lettre&amp;lettre=!AZ&amp;gcat=">'.$ltr.'</a>' ;
    if ( $counter != $num )
       $listletter .= ' | ';
       $counter++;
@@ -44,8 +43,8 @@ foreach($alphabet as $ltr) {
 $content .= $listletter.'</p>';
 if ($admin) 
    $content .='
-   <div class="mt-2 text-right">
-      <a href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart=admin/glossadmin" data-toggle="tooltip" title="[french]Admin[/french][english]Admin[/english]"><i class="fa fa-cogs fa-lg" aria-hidden="true"></i></a>
+   <div class="mt-2 text-end">
+      <a href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart=admin/glossadmin" data-bs-toggle="tooltip" data-bs-placement="left" title="[french]Administration[/french][english]Administration[/english][chinese]&#34892;&#25919;[/chinese][spanish]Administraci&oacute;n[/spanish][german]Verwaltung[/german]"><i class="fa fa-cogs fa-lg" aria-hidden="true"></i></a>
    </div>';
 $content = aff_langue($content);
 

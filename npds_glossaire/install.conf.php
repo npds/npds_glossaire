@@ -2,7 +2,7 @@
 /************************************************************************/
 /* DUNE by NPDS                                                         */
 /*                                                                      */
-/* NPDS Copyright (c) 2002-2019 by Philippe Brunier                     */
+/* NPDS Copyright (c) 2002-2023 by Philippe Brunier                     */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
@@ -37,26 +37,28 @@ $icon='npds_glossaire';
 #autodoc et dans le deuxième, A LA MEME POSITION D'INDEX QUE LE PREMIER, tapez le code à insérer dans le fichier.
 #autodoc Si le fichier doit être créé, n'oubliez pas les < ? php et ? > !!! (sans espace!).
 #autodoc Synopsis: $list_fich = array(array("nom_fichier1","nom_fichier2"), array("contenu_fchier1","contenu_fichier2"));
-$list_fich = '';
+$list_fich = array(array(''), array(''));
 
 #autodoc $sql = array(""): Si votre module doit exécuter une ou plusieurs requêtes SQL, tapez vos requêtes ici.
 #autodoc Attention! UNE requête par élément de tableau!
 #autodoc Synopsis: $sql = array("requête_sql_1","requête_sql_2");
+#autodoc Syntaxe création de table : 'CREATE TABLE "' ou 'CREATE TABLE IF NOT EXISTS "' <br /> tout les noms de table(s) utilisés doivent être concatené à gauche avec la variable $NPDS_Prefix
+global $NPDS_Prefix;
 $sql = array("CREATE TABLE ".$NPDS_Prefix."td_glossaire (
   id int(10) NOT NULL auto_increment,
-  gcat varchar(30) default NULL,
-  lettre varchar(8) NOT NULL default '',
-  nom longtext NOT NULL,
-  definition longtext NOT NULL,
+  gcat varchar(30) COLLATE utf8mb4_unicode_ci default NULL,
+  lettre varchar(8) COLLATE utf8mb4_unicode_ci NOT NULL default '',
+  nom longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  definition longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   affiche int(1) NOT NULL default '0',
-  lien varchar(255) NOT NULL default '',
+  lien varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL default '',
   PRIMARY KEY (id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
 
 #autodoc $blocs = array(array(""), array(""), array(""), array(""), array(""), array(""), array(""), array(""), array(""))
 #autodoc                titre      contenu    membre     groupe     index      rétention  actif      aide       description
 #autodoc Configuration des blocs
-$blocs = array(array(''), array(''), array('0'), array(''), array(''), array('0'), array(''), array(''), array(''));
+$blocs = array(array('[french]Glossaire[/french][english]Glossary[/english][chinese]&#x8BCD;&#x6C47;&#x8868;[/chinese][spanish]Glosario[/spanish][german]Glossar[/german]'), array('include#modules/npds_glossaire/glossaire_bloc.php'), array('0'), array('60'), array('1'), array('0'), array('1'), array(''), array(''));
 
 #autodoc $txtdeb : Vous pouvez mettre ici un texte de votre choix avec du html qui s'affichera au début de l'install
 #autodoc Si rien n'est mis, le texte par défaut sera automatiquement affiché
