@@ -2,7 +2,7 @@
 /************************************************************************/
 /* DUNE by NPDS                                                         */
 /*                                                                      */
-/* NPDS Copyright (c) 2002-2022 by Philippe Brunier                     */
+/* NPDS Copyright (c) 2002-2023 by Philippe Brunier                     */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
@@ -77,7 +77,7 @@ function glofoot() {
 
       while (list($dcategory) = sql_fetch_row($result)) {
          $dcategory=stripslashes($dcategory);
-         echo '<option '.$sel.' value="'.$dcategory.'">'.$dcategory.'</option>';
+         echo '<option value="'.$dcategory.'">'.$dcategory.'</option>';
       }
       echo '
                      </select>
@@ -203,7 +203,7 @@ function categ_glo($gcat, $debut) {
       $cache_obj->endCachingPage();
 }
 
-function rech_lettre($lettre, $gcat, $debut) {
+function rech_lettre($lettre, $debut, $gcat='') {
    global $ModPath, $ModStart, $SuperCache, $nb_affichage, $NPDS_Prefix;
 
    $lettre = removeHack(StripSlashes(strip_tags(urldecode($lettre), ENT_NOQUOTES)));
@@ -476,7 +476,7 @@ switch($op) {
    break;
    case "rech_lettre":
       glohead();
-      rech_lettre($lettre, $gcat, $debut);
+      rech_lettre($lettre, $debut, $gcat);
       glofoot();
    break;
     default:

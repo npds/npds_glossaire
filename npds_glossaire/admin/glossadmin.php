@@ -31,8 +31,7 @@ include_once("modules/$ModPath/lang/glossaire-$language.php");
 
    GraphicAdmin($hlpfile);
    echo '
-   <div id="adm_men">
-   <h2><img src="modules/npds_glossaire/npds_glossaire.png" alt="icon_npds_glossaire" style="max-width:140px; max-height=140px;" /><a href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart=admin/glossadmin">'.glo_translate("Glossaire").'</a></h2><hr />';
+      <h2><img src="modules/npds_glossaire/npds_glossaire.png" alt="icon_npds_glossaire" style="max-width:140px; max-height:140px;" /><a href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart=admin/glossadmin">'.glo_translate("Glossaire").'</a></h2><hr />';
 
 function admin_glo() {
    global $ModPath, $ModStart, $ok_submit, $activ_rech, $nb_affichage, $css, $NPDS_Prefix;
@@ -228,7 +227,7 @@ function admin_edit($id) {
    $result = sql_query("SELECT DISTINCT gcat FROM ".$NPDS_Prefix."td_glossaire ORDER BY gcat");
    while (list($dcategory) = sql_fetch_row($result)) {
       $dcategory=stripslashes($dcategory);
-   echo '
+      echo '
                <option '.$sel.' value="'.$dcategory.'">'.$dcategory.'</option>';
    }
    echo '
@@ -259,7 +258,7 @@ switch ($subop) {
    case "admin_supp":
       sql_query("DELETE FROM ".$NPDS_Prefix."td_glossaire WHERE id='$id'");
       if ($typ==1)
-         redirect_url("admin.php?op=Extend-Admin-SubModule&amp;ModPath=$ModPath&ModStart=$ModStart&subop=admin_list");
+         redirect_url("admin.php?op=Extend-Admin-SubModule&ModPath=$ModPath&ModStart=$ModStart&subop=admin_list");
       else
          redirect_url("admin.php?op=Extend-Admin-SubModule&ModPath=$ModPath&ModStart=$ModStart");
       die();
@@ -288,13 +287,13 @@ switch ($subop) {
    case "admin_term":
       $sgcategory=addslashes($sgcategory);
       if (!$gcategory) $gcategory = $sgcategory; else $gcategory=addslashes($gcategory);
-      if (($gcategory!="") and ($terme!="") and ($content!="")) {
+      if (($gcategory!='') and ($terme!='') and ($content!='')) {
          $lettre=substr(ucfirst($terme),0,1);
-            if (!preg_match("#[A-Z]#",$lettre)) {$lettre="!AZ";}
+         if (!preg_match("#[A-Z]#",$lettre)) $lettre="!AZ";
          $result=sql_query("SELECT * FROM ".$NPDS_Prefix."td_glossaire WHERE gcat='$gcategory' AND nom='$terme' AND definition='$content'");
          list($id)=sql_fetch_row($result);
-         if (!$id)
-            sql_query("INSERT INTO ".$NPDS_Prefix."td_glossaire VALUES (NULL, '$gcategory', '$lettre', '".strip_tags($terme)."', '$content', '1', '$xurl')");
+         if (!$id) // requete trop précise le nom identique dans la même catégorie serait plus judicieux ? la requete permet de ne pas avoir de doublon au sens strict mais permet d'avoir des doublons dans les catégories (si la définition n'est pas la meme ...)...??
+            sql_query("INSERT INTO ".$NPDS_Prefix."td_glossaire VALUES ('0', '$gcategory', '$lettre', '".strip_tags($terme)."', '$content', '1', '$xurl')");
          else
             echo '<script type="text/javascript">alert("'.glo_translate("Une définition identique existe déjà !").'")</script>';
       } else
@@ -333,7 +332,7 @@ switch ($subop) {
       $content .= "/* From Glossaire version 1.3 pour myPHPNuke 1.8                        */\n";
       $content .= "/* Copyright © 2001, Pascal Le Boustouller                              */\n";
       $content .= "/*                                                                      */\n";
-      $content .= "/* This version name NPDS Copyright (c) 2001-".date(Y)." by Philippe Brunier   */\n";
+      $content .= "/* This version name NPDS Copyright (c) 2001-".date('Y')." by Philippe Brunier   */\n";
       $content .= "/*                                                                      */\n";
       $content .= "/* module npds_glossaire v 3.0 pour revolution 16                       */\n";
       $content .= "/* by team jpb/phr 2017                                                 */\n";
