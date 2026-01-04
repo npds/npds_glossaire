@@ -2,7 +2,7 @@
 /************************************************************************/
 /* DUNE by NPDS                                                         */
 /*                                                                      */
-/* NPDS Copyright (c) 2002-2022 by Philippe Brunier                     */
+/* NPDS Copyright (c) 2002-2026 by Philippe Brunier                     */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
@@ -21,35 +21,35 @@ if (!function_exists('admindroits'))
    include($_SERVER['DOCUMENT_ROOT'].'/admin/die.php');
 if (strstr($ModPath,'..') || strstr($ModStart,'..') || stristr($ModPath, 'script') || stristr($ModPath, 'cookie') || stristr($ModPath, 'iframe') || stristr($ModPath, 'applet') || stristr($ModPath, 'object') || stristr($ModPath, 'meta') || stristr($ModStart, 'script') || stristr($ModStart, 'cookie') || stristr($ModStart, 'iframe') || stristr($ModStart, 'applet') || stristr($ModStart, 'object') || stristr($ModStart, 'meta'))
    die();
-$f_meta_nom ='npds_glossaire';
+$f_meta_nom = 'npds_glossaire';
 //==> controle droit
 admindroits($aid,$f_meta_nom);
 //<== controle droit
 
-include ("modules/$ModPath/glossaire.conf.php");
-include_once("modules/$ModPath/lang/glossaire-$language.php");
+include 'modules/'.$ModPath.'/glossaire.conf.php';
+include_once 'modules/'.$ModPath.'/lang/glossaire-'.$language.'.php';
 
    GraphicAdmin($hlpfile);
    echo '
-      <h2><img src="modules/npds_glossaire/npds_glossaire.png" alt="icon_npds_glossaire" style="max-width:140px; max-height:140px;" /><a href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart=admin/glossadmin">'.glo_translate("Glossaire").'</a></h2><hr />';
+      <h2><img src="modules/npds_glossaire/npds_glossaire.png" alt="icon_npds_glossaire" style="max-width:140px; max-height:140px;" /><a href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart=admin/glossadmin">'.glo_translate('Glossaire').'</a></h2><hr />';
 
 function admin_glo() {
    global $ModPath, $ModStart, $ok_submit, $activ_rech, $nb_affichage, $css, $NPDS_Prefix;
    $TableRep = sql_query("SELECT * FROM ".$NPDS_Prefix."td_glossaire WHERE affiche='0'");
    $avalider = sql_num_rows($TableRep);
-   echo '<p class="lead"><a class="" href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;subop=admin_list">'.glo_translate("Liste des définitions").'</a></p>';
-   if($avalider!=0) {
+   echo '<p class="lead"><a class="" href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;subop=admin_list">'.glo_translate('Liste des définitions').'</a></p>';
+   if($avalider != 0) {
    //Liste des demandes à valider
       echo '
-   <p class="lead"><a data-bs-toggle="collapse" href="#valglo" aria-expanded="true" aria-controls="valglo"><i data-bs-toggle="tooltip" data-bs-placement="top" title="'.glo_translate("Cliquer pour cacher ou déployer").'" class="toggle-icon fa fa-lg fa-caret-down"></i></a> '.glo_translate("Validation ou suppression des demandes").'<span class="badge bg-danger float-end">'.$avalider.'</span></p>
+   <p class="lead"><a data-bs-toggle="collapse" href="#valglo" aria-expanded="true" aria-controls="valglo"><i data-bs-toggle="tooltip" data-bs-placement="top" title="'.glo_translate('Cliquer pour cacher ou déployer').'" class="toggle-icon fa fa-lg fa-caret-down"></i></a> '.glo_translate('Validation ou suppression des demandes').'<span class="badge bg-danger float-end">'.$avalider.'</span></p>
    <div id="valglo" class="collapse" role="tabpanel" aria-labelledby="">
       <table class="table table-hover table-sm">
          <thead>
             <tr>
                <th class="n-t-col-xs-2">ID</th>
                <th>Cat</th>
-               <th>'.glo_translate("Terme").'</th>
-               <th>'.glo_translate("Définition").'</th>
+               <th>'.glo_translate('Terme').'</th>
+               <th>'.glo_translate('Définition').'</th>
                <th class="n-t-col-xs-2">&nbsp;</th>
             </tr>
          </thead>
@@ -60,8 +60,8 @@ function admin_glo() {
                <td>'.$id_terme.'</td><td>'.$gcat.'</td>
                <td>'.$terme.'</td><td>'.$terme_def.'</td>
                <td class="text-right">
-                  <span class="mx-1"><a href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;subop=admin_add&amp;id='.$id_terme.'" title="'.glo_translate("Valider").'" data-toggle="tooltip"><i class="far fa-check-square fa-lg" aria-hidden="true"></i></a></span>
-                  <span class="mx-1"><a href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;subop=admin_supp&amp;id='.$id_terme.'"><i class="fas fa-trash fa-lg text-danger" title="'.glo_translate("Supprimer").'" data-toggle="tooltip"></i></a></span>
+                  <span class="mx-1"><a href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;subop=admin_add&amp;id='.$id_terme.'" title="'.glo_translate('Valider').'" data-toggle="tooltip"><i class="far fa-check-square fa-lg" aria-hidden="true"></i></a></span>
+                  <span class="mx-1"><a href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;subop=admin_supp&amp;id='.$id_terme.'"><i class="fas fa-trash fa-lg text-danger" title="'.glo_translate('Supprimer').'" data-toggle="tooltip"></i></a></span>
                </td>
             </tr>';
       }
@@ -72,17 +72,17 @@ function admin_glo() {
    }
 //Soumettre une définition
    echo '
-   <p class="lead"><a data-bs-toggle="collapse" href="#soudef" aria-expanded="true" aria-controls="soudef"><i data-bs-toggle="tooltip" data-bs-placement="top" title="'.glo_translate("Cliquer pour cacher ou déployer").'" class="toggle-icon fa fa-lg fa-caret-down"></i></a> '.glo_translate("Soumettre une définition").'</p>
+   <p class="lead"><a data-bs-toggle="collapse" href="#soudef" aria-expanded="true" aria-controls="soudef"><i data-bs-toggle="tooltip" data-bs-placement="top" title="'.glo_translate('Cliquer pour cacher ou déployer').'" class="toggle-icon fa fa-lg fa-caret-down"></i></a> '.glo_translate('Soumettre une définition').'</p>
    <div id="soudef" class="collapse" role="tabpanel" aria-labelledby="">
       <form class="mb-3" action="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'" method="post" name="adminForm">
          <div class="mb-3 row">
-            <label class="form-label col-sm-4" for="terme">'.glo_translate("Terme").'</label>
+            <label class="form-label col-sm-4" for="terme">'.glo_translate('Terme').'</label>
             <div class="col-sm-8">
                <input class="form-control" type="text" id="terme" name="terme" size="45" maxsize="100" />
             </div>
          </div>
          <div class="mb-3 row">
-            <label class="form-label col-sm-4" for="gcategory">'.glo_translate("Catégorie").'</label>
+            <label class="form-label col-sm-4" for="gcategory">'.glo_translate('Catégorie').'</label>
             <div class="col-sm-4">
                <input class="form-control" type="text" id="gcategory" name="gcategory" maxlength="30" />
             </div>
@@ -99,7 +99,7 @@ function admin_glo() {
             </div>
          </div>
          <div class="mb-3 row">
-            <label class="form-label col-sm-4" for="content">'.glo_translate("Définition").'</label>
+            <label class="form-label col-sm-4" for="content">'.glo_translate('Définition').'</label>
             <div class="col-sm-8">
                <textarea class="form-control tin" rows="10" id="content" name="content"></textarea>';
    echo aff_editeur('content', '');
@@ -107,7 +107,7 @@ function admin_glo() {
             </div>
          </div>
          <div class="mb-3 row">
-            <label class="col-form-label col-sm-4" for="xurl">'.glo_translate("Site internet").'</label>
+            <label class="col-form-label col-sm-4" for="xurl">'.glo_translate('Site internet').'</label>
             <div class="col-sm-8">
                <input class="form-control" type="text" id="xurl" name="xurl" maxlength="255" />
                <span class="form-text text-muted small">exemple : http(s)://www.npds.org</span>
@@ -116,51 +116,51 @@ function admin_glo() {
          <input type="hidden" name="subop" value="admin_term" />
          <div class="mb-3 row">
             <div class="col-sm-8 offset-sm-4">
-               <input class="btn btn-primary btn-sm" type="submit" value="'.glo_translate("Valider").'" />
+               <input class="btn btn-primary btn-sm" type="submit" value="'.glo_translate('Valider').'" />
             </div>
          </div>
       </form>
    </div>';
 //Configuration
    echo '
-      <p class="lead"><a data-bs-toggle="collapse" href="#confu" aria-expanded="true" aria-controls="confu"><i data-bs-toggle="tooltip" data-placement="top" title="'.glo_translate("Cliquer pour cacher ou déployer").'" class="toggle-icon fa fa-lg fa-caret-down"></i></a> '.glo_translate("Configuration").'</p>
+      <p class="lead"><a data-bs-toggle="collapse" href="#confu" aria-expanded="true" aria-controls="confu"><i data-bs-toggle="tooltip" data-placement="top" title="'.glo_translate('Cliquer pour cacher ou déployer').'" class="toggle-icon fa fa-lg fa-caret-down"></i></a> '.glo_translate('Configuration').'</p>
       <div id="confu" class="collapse" role="tabpanel" aria-labelledby="">
       <form action="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;subop=admin_settings" method="post">
          <div class="mb-3 row">
-            <label class="form-label col-sm-4" for="nbaff_new">'.glo_translate("Définitions par page").'</label>
+            <label class="form-label col-sm-4" for="nbaff_new">'.glo_translate('Définitions par page').'</label>
             <div class="col-sm-2">
                <input class="form-control" type="text" id="nbaff_new" name="nbaff_new" value="'.$nb_affichage.'" size="45" maxsize="3" />
             </div>
          </div>
          <div class="mb-3 row">
-            <label class="form-label col-sm-4">'.glo_translate("Autorise la soumission").'</label>
+            <label class="form-label col-sm-4">'.glo_translate('Autorise la soumission').'</label>
             <div class="col-sm-8">
                <div class="form-check form-check-inline">
                   <input type="radio" class="form-check-input" id="oksubmit_new_y" name="oksubmit_new" value="true"'.($ok_submit?' checked="checked"':'').' />
-                  <label class="form-check-label" for="oksubmit_new_y">'.glo_translate("Oui").'</label>
+                  <label class="form-check-label" for="oksubmit_new_y">'.glo_translate('Oui').'</label>
                </div>
                <div class="form-check form-check-inline">
                   <input type="radio" class="form-check-input" id="oksubmit_new_n" name="oksubmit_new" value="false"'.(!$ok_submit?' checked="checked"':'').' />
-                  <label class="form-check-label" for="oksubmit_new_n">'.glo_translate("Non").'</label>
+                  <label class="form-check-label" for="oksubmit_new_n">'.glo_translate('Non').'</label>
                </div>
             </div>
          </div>
          <div class="mb-3 row">
-            <label class="form-label col-sm-4">'.glo_translate("Autorise la recherche").'</label>
+            <label class="form-label col-sm-4">'.glo_translate('Autorise la recherche').'</label>
             <div class="col-sm-8">
                <div class="form-check form-check-inline">
                   <input type="radio" class="form-check-input" id="activrech_new_y" name="activrech_new" value="true"'.($activ_rech?' checked="checked"':'').' />
-                  <label class="form-check-label" for="activrech_new_y">'.glo_translate("Oui").'</label>
+                  <label class="form-check-label" for="activrech_new_y">'.glo_translate('Oui').'</label>
                </div>
                <div class="form-check form-check-inline">
                   <input type="radio" class="form-check-input" id="activrech_new_n" name="activrech_new" value="false"'.(!$activ_rech?' checked="checked"':'').' />
-                  <label class="form-check-label" for="activrech_new_n">'.glo_translate("Non").'
+                  <label class="form-check-label" for="activrech_new_n">'.glo_translate('Non').'
                </div>
             </div>
          </div>
          <div class="mb-3 row">
             <div class="col-sm-8 offset-sm-4">
-               <input class="btn btn-primary btn-sm" type="submit" value="'.glo_translate("Valider").'" />
+               <input class="btn btn-primary btn-sm" type="submit" value="'.glo_translate('Valider').'" />
             </div>
          </div>
          </form>
@@ -172,18 +172,18 @@ function admin_glo() {
 function admin_list() {
    global $ModPath, $ModStart, $NPDS_Prefix;
    echo '
-   <h4 class="lead">'.glo_translate("Liste des définitions dans la base de données").'</h4>
+   <h4 class="lead">'.glo_translate('Liste des définitions dans la base de données').'</h4>
    <table class="table table-sm " data-toggle="table" data-search="true" data-show-toggle="true" data-mobile-responsive="true" data-buttons-class="outline-secondary" data-icons="icons" data-icons-prefix="fa">
       <thead>
          <tr>
             <th data-halign="center" data-sortable="true" class="n-t-col-xs-2">Cat</th>
-            <th data-halign="center" data-sortable="true" class="n-t-col-xs-2">'.glo_translate("Terme").'</th>
-            <th data-halign="center">'.glo_translate("Définition").'</th>
-            <th data-halign="center" data-align="center" class="n-t-col-xs-2 align-middle">'.glo_translate("Fonctions").'</th>
+            <th data-halign="center" data-sortable="true" class="n-t-col-xs-2">'.glo_translate('Terme').'</th>
+            <th data-halign="center">'.glo_translate('Définition').'</th>
+            <th data-halign="center" data-align="center" class="n-t-col-xs-2 align-middle">'.glo_translate('Fonctions').'</th>
          </tr>
          </thead>
          <tbody>';
-   $TableRep=sql_query("SELECT * FROM ".$NPDS_Prefix."td_glossaire WHERE affiche!='0' ORDER BY gcat,nom");
+   $TableRep = sql_query("SELECT * FROM ".$NPDS_Prefix."td_glossaire WHERE affiche!='0' ORDER BY gcat,nom");
    while (list($id_terme,$gcat,$lettre,$terme,$terme_def) = sql_fetch_row($TableRep)) {
       echo '
             <tr>
@@ -191,9 +191,9 @@ function admin_list() {
                <td>'.$terme.'</td>
                <td>'.$terme_def.'</td>
                <td>
-                  <a class="mr-2" href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;subop=admin_edit&amp;id='.$id_terme.'"><i class="fa fa-edit fa-lg" data-bs-original-title="'.glo_translate("Editer").'" data-bs-toggle="tooltip" data-bs-placement="left"></i></a>
-                  <a class="mr-2" href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;subop=admin_meta&amp;id='.$id_terme.'"><span title="'.glo_translate("Meta").'" data-bs-toggle="tooltip" data-bs-placement="left">'.glo_translate("Meta").'</span></a>
-                  <a class="" href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;subop=admin_supp&amp;id='.$id_terme.'&amp;typ=1"><i class="fas fa-trash fa-lg text-danger" title="'.glo_translate("Supprimer").'" data-bs-toggle="tooltip" data-bs-placement="left"></i></a>
+                  <a class="mr-2" href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;subop=admin_edit&amp;id='.$id_terme.'"><i class="fa fa-edit fa-lg" data-bs-original-title="'.glo_translate('Editer').'" data-bs-toggle="tooltip" data-bs-placement="left"></i></a>
+                  <a class="mr-2" href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;subop=admin_meta&amp;id='.$id_terme.'"><span title="'.glo_translate('Meta').'" data-bs-toggle="tooltip" data-bs-placement="left">'.glo_translate('Meta').'</span></a>
+                  <a class="" href="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'&amp;subop=admin_supp&amp;id='.$id_terme.'&amp;typ=1"><i class="fas fa-trash fa-lg text-danger" title="'.glo_translate('Supprimer').'" data-bs-toggle="tooltip" data-bs-placement="left"></i></a>
                </td>
             </tr>';
    }
@@ -207,18 +207,18 @@ function admin_edit($id) {
    global $ModPath, $ModStart, $NPDS_Prefix;
 
    echo '<p class="lead">'.glo_translate("Edition d'une définition").'</p>';
-   $TableRep=sql_query("SELECT * FROM ".$NPDS_Prefix."td_glossaire WHERE id='$id'");
+   $TableRep = sql_query("SELECT * FROM ".$NPDS_Prefix."td_glossaire WHERE id='$id'");
    list($id_terme,$gcat,$lettre,$terme,$terme_def,$aff,$lien) = sql_fetch_row($TableRep);
    echo '
    <form action="admin.php?op=Extend-Admin-SubModule&amp;ModPath='.$ModPath.'&amp;ModStart='.$ModStart.'" method="POST" name="adminForm">
       <div class="mb-3 row">
-         <label class="form-label col-sm-4" for="terme">'.glo_translate("Terme").'</label>
+         <label class="form-label col-sm-4" for="terme">'.glo_translate('Terme').'</label>
          <div class="col-sm-8">
             <input class="form-control" type="text" id="terme" name="terme" value="'.$terme.'" />
          </div>
       </div>
       <div class="mb-3 row">
-         <label class="form-label col-sm-4" for="gcategory">'.glo_translate("Catégorie").'</label>
+         <label class="form-label col-sm-4" for="gcategory">'.glo_translate('Catégorie').'</label>
          <div class="col-sm-4">
             <input class="form-control" type="text" id="gcategory" name="gcategory" value="'.stripslashes($gcat).'" size="25" maxlength="30" />
          </div>
@@ -235,7 +235,7 @@ function admin_edit($id) {
          </div>
       </div>
       <div class="mb-3 row">
-         <label class="form-label col-sm-4" for="">'.glo_translate("Définition").'</label>
+         <label class="form-label col-sm-4" for="">'.glo_translate('Définition').'</label>
          <div class="col-sm-8">
             <textarea class="form-control tin" rows="10" name="content">'.$terme_def.'</textarea>';
 //   echo aff_editeur("content", "true");
@@ -243,7 +243,7 @@ function admin_edit($id) {
          </div>
       </div>
       <div class="mb-3 row">
-         <div class="col-sm-4"><label class="form-label" for="xurl">'.glo_translate("Site internet").'</div>
+         <div class="col-sm-4"><label class="form-label" for="xurl">'.glo_translate('Site internet').'</div>
          <div class="col-sm-8">
             <input class="form-control" type="text" id="xurl" name="xurl" value="'.$lien.'" maxlength="255" />
             <span class="help-block text-muted text-end">exemple : http(s)://www.npds.org</small>
@@ -251,67 +251,63 @@ function admin_edit($id) {
       </div>
       <input type="hidden" name="id" value="'.$id.'" />
       <input type="hidden" name="subop" value="admin_modify" />
-      <input class="btn btn-primary btn-sm" type="submit" value="'.glo_translate("Valider").'" />';
+      <input class="btn btn-primary btn-sm" type="submit" value="'.glo_translate('Valider').'" />';
 }
 settype($subop,'string');
 switch ($subop) {
-   case "admin_supp":
+   case 'admin_supp':
       sql_query("DELETE FROM ".$NPDS_Prefix."td_glossaire WHERE id='$id'");
-      if ($typ==1)
+      if ($typ == 1)
          redirect_url("admin.php?op=Extend-Admin-SubModule&ModPath=$ModPath&ModStart=$ModStart&subop=admin_list");
       else
          redirect_url("admin.php?op=Extend-Admin-SubModule&ModPath=$ModPath&ModStart=$ModStart");
       die();
    break;
-
-   case "admin_add":
+   case 'admin_add':
       sql_query("UPDATE ".$NPDS_Prefix."td_glossaire SET affiche='".true."' WHERE id='$id'");
       redirect_url("admin.php?op=Extend-Admin-SubModule&ModPath=$ModPath&ModStart=$ModStart");
       die();
    break;
-
-   case "admin_edit":
+   case 'admin_edit':
       admin_edit($id);
    break;
-
-   case "admin_modify":
-      $sgcategory=addslashes($sgcategory);
-      if (!$gcategory) { $gcategory = $sgcategory; } else { $gcategory=addslashes($gcategory); }
-      $lettre=substr(ucfirst($terme),0,1);
-      if (!preg_match("#[A-Z]#",$lettre)) $lettre="!AZ";
+   case 'admin_modify':
+      $sgcategory = addslashes($sgcategory);
+      if (!$gcategory) { $gcategory = $sgcategory; } else { $gcategory = addslashes($gcategory); }
+      $lettre = substr(ucfirst($terme),0,1);
+      if (!preg_match("#[A-Z]#",$lettre)) $lettre = '!AZ';
       sql_query("UPDATE ".$NPDS_Prefix."td_glossaire SET gcat='$gcategory', lettre='$lettre', nom='$terme', definition='$content', lien='$xurl' WHERE id='$id'");
       redirect_url("admin.php?op=Extend-Admin-SubModule&ModPath=$ModPath&ModStart=$ModStart&subop=admin_list");
       die();
    break;
-
-   case "admin_term":
-      $sgcategory=addslashes($sgcategory);
-      if (!$gcategory) $gcategory = $sgcategory; else $gcategory=addslashes($gcategory);
-      if (($gcategory!='') and ($terme!='') and ($content!='')) {
-         $lettre=substr(ucfirst($terme),0,1);
-         if (!preg_match("#[A-Z]#",$lettre)) $lettre="!AZ";
-         $result=sql_query("SELECT * FROM ".$NPDS_Prefix."td_glossaire WHERE gcat='$gcategory' AND nom='$terme' AND definition='$content'");
-         list($id)=sql_fetch_row($result);
+   case 'admin_term':
+      $sgcategory = addslashes($sgcategory);
+      if (!$gcategory) $gcategory = $sgcategory; else $gcategory = addslashes($gcategory);
+      if (($gcategory != '') and ($terme != '') and ($content != '')) {
+         $lettre = substr(ucfirst($terme),0,1);
+         if (!preg_match("#[A-Z]#",$lettre)) $lettre = '!AZ';
+         $result = sql_query("SELECT * FROM ".$NPDS_Prefix."td_glossaire WHERE gcat='$gcategory' AND nom='$terme' AND definition='$content'");
+         list($id) = sql_fetch_row($result);
          if (!$id) // requete trop précise le nom identique dans la même catégorie serait plus judicieux ? la requete permet de ne pas avoir de doublon au sens strict mais permet d'avoir des doublons dans les catégories (si la définition n'est pas la meme ...)...??
             sql_query("INSERT INTO ".$NPDS_Prefix."td_glossaire VALUES ('0', '$gcategory', '$lettre', '".strip_tags($terme)."', '$content', '1', '$xurl')");
          else
-            echo '<script type="text/javascript">alert("'.glo_translate("Une définition identique existe déjà !").'")</script>';
+            echo '<script type="text/javascript">alert("'.glo_translate('Une définition identique existe déjà !').'")</script>';
       } else
-         echo '<script type="text/javascript">alert("'.glo_translate("Merci de respecter les consignes").'")</script>';
+         echo '<script type="text/javascript">alert("'.glo_translate('Merci de respecter les consignes').'")</script>';
       redirect_url("admin.php?op=Extend-Admin-SubModule&ModPath=$ModPath&ModStart=$ModStart");
       die();
    break;
 
    case 'admin_meta':
-      $ibid=sql_query("SELECT nom, definition, lien FROM ".$NPDS_Prefix."td_glossaire WHERE id='$id'");
+      $ibid = sql_query("SELECT nom, definition, lien FROM ".$NPDS_Prefix."td_glossaire WHERE id='$id'");
       list($terme,$terme_def,$lien) = sql_fetch_row($ibid);
 
       $target = $lien ? 'target="_blank"' : '';
       $href = $lien ? $lien : '#nogo';
-      $terme_def=str_replace("\r","",$terme_def);
-      $terme_def=str_replace("\n","",$terme_def);
-      $terme_def=str_replace("\t","",$terme_def);
-      $terme_def=str_replace("'","\'",$terme_def);
+      $terme_def = str_replace("\r",'',$terme_def);
+      $terme_def = str_replace("\n",'',$terme_def);
+      $terme_def = str_replace("\t",'',$terme_def);
+      $terme_def = str_replace("'","\'",$terme_def);
 
       $Q = sql_query("SELECT def FROM ".$NPDS_Prefix."metalang WHERE def='".$terme."'");
       $Q = sql_fetch_assoc($Q);
@@ -322,9 +318,8 @@ switch ($subop) {
       redirect_url("admin.php?op=Extend-Admin-SubModule&ModPath=$ModPath&ModStart=$ModStart&subop=admin_list");
       die();
    break;
-
    case 'admin_settings':
-      $file = fopen("modules/$ModPath/glossaire.conf.php", "w");
+      $file = fopen("modules/$ModPath/glossaire.conf.php", 'w');
       $content = "<?php\n";
       $content .= "/************************************************************************/\n";
       $content .= "/* DUNE by NPDS                                                         */\n";
@@ -354,14 +349,12 @@ switch ($subop) {
       redirect_url("admin.php?op=Extend-Admin-SubModule&ModPath=$ModPath&ModStart=$ModStart");
       die();
    break;
-
    case 'admin_list':
       admin_list();
    break;
-
    default:
       admin_glo();
    break;
 }
-include ("footer.php");
+include 'footer.php';
 ?>

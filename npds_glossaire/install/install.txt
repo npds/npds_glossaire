@@ -5,7 +5,7 @@
 /* From Glossaire version 1.3 pour myPHPNuke 1.8                        */
 /* Copyright © 2001, Pascal Le Boustouller                              */
 /* Tribal-dolphin 2008                                                  */
-/* This version name NPDS Copyright (c) 2001-2017 by Philippe Brunier   */
+/* This version name NPDS Copyright (c) 2001-2026 by Philippe Brunier   */
 /*                                                                      */
 /* module npds_glossaire v 3.0 pour revolution 16                       */
 /* by team jpb/phr 2017/2022                                            */

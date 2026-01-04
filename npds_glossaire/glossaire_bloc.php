@@ -2,7 +2,7 @@
 /************************************************************************/
 /* DUNE by NPDS                                                         */
 /*                                                                      */
-/* NPDS Copyright (c) 2002-2024 by Philippe Brunier                     */
+/* NPDS Copyright (c) 2002-2026 by Philippe Brunier                     */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
@@ -18,11 +18,11 @@
 
 if (stristr($_SERVER['PHP_SELF'],'glossaire_bloc.php')) die();
 global $language;
-$ModPath='npds_glossaire';
-$ModStart='index';
-include_once('modules/'.$ModPath.'/lang/glossaire-'.$language.'.php');
+$ModPath = 'npds_glossaire';
+$ModStart = 'index';
+include_once 'modules/'.$ModPath.'/lang/glossaire-'.$language.'.php';
 
-$content ='';
+$content = '';
 $content .= '
                               <div class="d-flex w-100 justify-content-center"><a href="modules.php?ModPath=npds_glossaire&amp;ModStart=index"><img src="modules/npds_glossaire/npds_glossaire.png" alt="icon_npds_glossaire" style="max-width:140px; max-height:140px;"></a></div>';
 $content .= '
@@ -31,7 +31,7 @@ $content .= '
 $alphabet = array ('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',glo_translate("Autres"));
 $num = count($alphabet) - 1;
 $counter = 0;
-$listletter='';
+$listletter = '';
 
 foreach($alphabet as $ltr) {
    $listletter .=  ($ltr!=glo_translate("Autres")) ?
