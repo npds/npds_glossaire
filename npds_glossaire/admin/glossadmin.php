@@ -8,8 +8,9 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /*                                                                      */
-/* Module npds_glossaire v 3.0 pour revolution 16                       */
-/* by team jpb/phr 2017                                                 */
+/* Module npds_glossaire pour revolution 16                             */
+/* v3.1 by jpb 2026                                                     */
+/* v3.0 by team jpb/phr 2017                                            */
 /*                                                                      */
 /* From Glossaire version 1.3 pour myPHPNuke 1.8                        */
 /* Copyright © 2001, Pascal Le Boustouller                              */
@@ -327,10 +328,11 @@ switch ($subop) {
       $content .= "/* From Glossaire version 1.3 pour myPHPNuke 1.8                        */\n";
       $content .= "/* Copyright © 2001, Pascal Le Boustouller                              */\n";
       $content .= "/*                                                                      */\n";
-      $content .= "/* This version name NPDS Copyright (c) 2001-".date('Y')." by Philippe Brunier   */\n";
+      $content .= "/* NPDS Copyright (c) 2001-".date('Y')." by Philippe Brunier                     */\n";
       $content .= "/*                                                                      */\n";
       $content .= "/* module npds_glossaire v 3.0 pour revolution 16                       */\n";
-      $content .= "/* by team jpb/phr 2017                                                 */\n";
+      $content .= "/* v3.1 by jpb 2026                                                     */\n";
+      $content .= "/* v3.0 by team jpb/phr 2017                                            */\n";
       $content .= "/*                                                                      */\n";
       $content .= "/* This program is free software. You can redistribute it and/or modify */\n";
       $content .= "/* it under the terms of the GNU General Public License as published by */\n";
@@ -349,12 +351,8 @@ switch ($subop) {
       redirect_url("admin.php?op=Extend-Admin-SubModule&ModPath=$ModPath&ModStart=$ModStart");
       die();
    break;
-   case 'admin_list':
-      admin_list();
-   break;
-   default:
-      admin_glo();
-   break;
+   case 'admin_list': admin_list(); break;
+   default: admin_glo(); break;
 }
 include 'footer.php';
 ?>
