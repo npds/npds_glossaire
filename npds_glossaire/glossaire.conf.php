@@ -7,9 +7,8 @@
 /*                                                                      */
 /* This version name NPDS Copyright (c) 2001-2026 by Philippe Brunier   */
 /*                                                                      */
-/* Module npds_glossaire pour revolution 16                             */
-/* v3.1 by jpb 2026                                                     */
-/* v3.0 by team jpb/phr 2017                                            */
+/* module npds_glossaire v 3.0 pour revolution 16                       */
+/* by team jpb/phr 2017                                                 */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
