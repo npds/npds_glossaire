@@ -8,8 +8,9 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /*                                                                      */
-/* Module npds_glossaire v 3.0 pour revolution 16                       */
-/* by team jpb/phr 2017                                                 */
+/* Module npds_glossaire pour revolution 16                             */
+/* v3.1 by jpb 2026                                                     */
+/* v3.0 by team jpb/phr 2017                                            */
 /*                                                                      */
 /* From Glossaire version 1.3 pour myPHPNuke 1.8                        */
 /* Copyright © 2001, Pascal Le Boustouller                              */
